@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 19 2025 г., 18:48
--- Версия сервера: 5.7.39
+-- Время создания: Фев 24 2025 г., 15:13
+-- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,27 +28,25 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bookings` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `tour_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `tour_id` int NOT NULL,
   `date` date NOT NULL,
-  `seats_booked` int(11) NOT NULL,
+  `seats_booked` int NOT NULL,
   `status` enum('pending','confirmed','canceled') DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `bookings`
 --
 
 INSERT INTO `bookings` (`id`, `user_id`, `tour_id`, `date`, `seats_booked`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 2, '2025-02-14', 6, 'canceled', '2025-02-14 15:35:22', '2025-02-18 15:15:11'),
-(6, 3, 2, '2025-02-18', 3, 'canceled', '2025-02-18 11:27:38', '2025-02-18 15:15:24'),
-(7, 3, 2, '2025-02-18', 3, 'canceled', '2025-02-18 11:28:15', '2025-02-18 15:15:27'),
-(8, 3, 2, '2025-02-18', 5, 'pending', '2025-02-18 11:28:31', '2025-02-18 11:28:31'),
-(9, 3, 2, '2025-07-10', 5, 'pending', '2025-02-18 11:32:03', '2025-02-18 11:32:03'),
-(10, 3, 3, '2025-08-05', 5, 'pending', '2025-02-19 12:37:48', '2025-02-19 12:37:48');
+(11, 5, 2, '2025-07-10', 5, 'confirmed', '2025-02-22 00:10:50', '2025-02-24 08:17:21'),
+(12, 6, 2, '2025-07-10', 10, 'canceled', '2025-02-22 01:51:15', '2025-02-24 08:24:18'),
+(14, 5, 25, '2025-03-02', 12, 'pending', '2025-02-24 09:01:49', '2025-02-24 09:01:49'),
+(15, 5, 2, '2025-07-20', 2, 'pending', '2025-02-24 09:02:03', '2025-02-24 09:02:03');
 
 -- --------------------------------------------------------
 
@@ -57,27 +55,27 @@ INSERT INTO `bookings` (`id`, `user_id`, `tour_id`, `date`, `seats_booked`, `sta
 --
 
 CREATE TABLE `tours` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text,
   `location` varchar(255) NOT NULL,
-  `duration` int(11) NOT NULL COMMENT 'Продолжительность в часах',
+  `duration` int NOT NULL COMMENT 'Продолжительность в часах',
   `price` decimal(10,2) NOT NULL,
   `available_dates` text COMMENT 'Список дат в формате JSON',
   `image_url` varchar(255) DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT 'active',
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `tours`
 --
 
 INSERT INTO `tours` (`id`, `name`, `description`, `location`, `duration`, `price`, `available_dates`, `image_url`, `status`, `created_at`, `updated_at`) VALUES
-(2, 'тур  с китами', 'Уникальное путешествие на Камчатку.1', 'Камчатка', 5, '7000.00', '[\"2025-07-10\", \"2025-07-20\"]', '/photo/photo2.jpg', 'active', '0000-00-00 00:00:00', '2025-02-19 05:33:04'),
-(3, 'Белухи в Белом море', 'Наблюдение за белухами в Белом море.', 'Белое море', 3, '4500.00', '[\"2025-08-05\", \"2025-08-15\"]', '/photo/photo2.jpg', 'inactive', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 'Тур с касатками', 'увлекательный тур', 'фйывмаип', 2, '6000.00', '[\"2025-02-20\"]', 'photo/1739979599.jpg', 'inactive', '2025-02-19 12:39:59', '2025-02-19 12:41:08');
+(2, 'тур  с китами 123', 'Уникальное путешествие на Камчатку.123', 'Камчатка', 5, '7000.00', '[\"2025-07-10\", \"2025-07-20\"]', '/photo/photo2.jpg', 'active', '0000-00-00 00:00:00', '2025-02-22 01:11:10'),
+(3, 'Белухи в Белом море 123', 'Наблюдение за белухами в Белом море. 123', 'Белое море', 3, '4500.00', '[\"2025-08-05\", \"2025-08-15\"]', '/photo/1740197402.jpg', 'inactive', '0000-00-00 00:00:00', '2025-02-22 01:10:29'),
+(25, 'Тур с касатками', 'Тур с касатками', 'Океан', 12, '12999.00', '[\"2025-02-26\",\"2025-02-28\",\"2025-03-02\",\"2025-03-08\"]', 'photo/1740397519.jpg', 'active', '2025-02-24 08:45:19', '2025-02-24 08:45:19');
 
 -- --------------------------------------------------------
 
@@ -86,7 +84,7 @@ INSERT INTO `tours` (`id`, `name`, `description`, `location`, `duration`, `price
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `role` enum('client','admin') NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -94,17 +92,15 @@ CREATE TABLE `users` (
   `phone_number` varchar(20) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`id`, `role`, `email`, `password`, `full_name`, `phone_number`, `created_at`, `updated_at`) VALUES
-(1, 'client', 'nigmatullina.karina733@yandex.ru', '$2y$10$YBnTq8HmytuRFkb7CwVy8.inOrAjQqnJ/x/Fnwk5XoI3slFQRtqFG', 'карина нигматуллина', '+79959455301', '2025-02-13 16:05:09', '2025-02-13 16:05:09'),
-(2, 'admin', 'mir@mail.ru', '$2y$10$TE31KZ81WzcpDQXonMAWpuJff7QlQ98RFkkr./0y7TxRA2TqWojTS', 'миронова наталья евгеньевна', '+79870252334', '2025-02-16 08:06:25', '2025-02-18 14:39:00'),
-(3, 'client', 'mironova@mail.ru', '$2y$10$D2WblqrWAbuGH2/fjHZRf.41kmm3jpa7C4dxGjeOW/Q51.fKALxua', 'миронова наталья евгеньевна', '+79870252335', '2025-02-16 08:07:34', '2025-02-16 08:07:34'),
-(4, 'client', 'mir13@mail.ru', '$2y$10$yOEYZJSBH8Qm5u36ZpZAW.IBuAKMT5DO9V91tRQ9WvfIXRe6H5Kj6', 'миронова наталья евгеньевна', '+77870252333', '2025-02-16 08:09:02', '2025-02-16 08:09:02');
+(5, 'client', 'lakos208@gmail.com', '$2y$10$J6/z2Mkuiq6pjpKgrNaIs.CB6tQyjQGR14rwx5503ztOoTCyabHTm', 'Карпов Денис Витальевич', '+79867074777', '2025-02-22 00:09:44', '2025-02-22 00:09:44'),
+(6, 'admin', 'honorxpremium75@gmail.com', '$2y$10$oaLtyANaT9XSVJreIhgvkevy9Nblj5J1.HZmSeUSsJlCReQ1URbgS', 'Карпов Денис Витальевич', '+79867074776', '2025-02-22 00:11:59', '2025-02-22 03:12:20');
 
 --
 -- Индексы сохранённых таблиц
@@ -139,19 +135,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `tours`
 --
 ALTER TABLE `tours`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
