@@ -25,7 +25,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'duration' => 'required|numeric',
             'status' => 'required|in:active,inactive',
             'available_dates' => 'required|array',
@@ -71,20 +71,26 @@ class AdminController extends Controller
         return view('admin.AdminApp', compact('bookings'));
     }
 
-    public function changeStatus($id)
+    public function changeStatus(Request $request, $id)
     {
         $booking = Booking::findOrFail($id);
 
-        if ($booking->status === 'pending') {
-            $booking->status = 'confirmed';
-        } else {
-            $booking->status = 'canceled';
+        // Убедимся, что передан статус
+        if ($request->has('status')) {
+            $newStatus = $request->input('status');
+
+            // Убедимся, что переданное значение допустимо
+            if (in_array($newStatus, ['confirmed', 'canceled'])) {
+                $booking->status = $newStatus;
+                $booking->save();
+
+                return redirect()->route('AdminApp')->with('success', 'Статус бронирования изменен.');
+            }
         }
 
-        $booking->save();
-
-        return redirect()->route('AdminApp')->with('success', 'Статус бронирования изменен.');
+        return redirect()->route('AdminApp')->with('error', 'Ошибка изменения статуса.');
     }
+
 
     public function adminUpdate_show($id)
     {

@@ -28,20 +28,32 @@
                 <td>{{ $booking->tour->name }}</td> <!-- Название тура -->
                 <td>{{date('d.m.Y', strtotime($booking->date))}}</td>
                 <td>{{ $booking->seats_booked }}</td>
-                <td>{{ $booking->status }}</td>
+                <? if ($booking->status === 'pending') { ?>
+                    <td>ожидание</td>
+                <? } else if ($booking->status === 'confirmed') { ?>
+                    <td>принято</td>
+                <? }
+                if ($booking->status === 'canceled') { ?>
+                    <td>отклонено</td>
+                <? } ?>
+
                 <td>
                     <? if ($booking->status === 'pending') { ?>
                         <!-- Кнопки для смены статуса -->
                         <form action="{{ route('admin.changeStatus', $booking->id) }}" method="POST">
                             @csrf
                             @method('PUT')
+                            <input type="hidden" name="status" value="confirmed">
                             <button type="submit" class="btn btn-success">Принять</button>
                         </form>
+
                         <form action="{{ route('admin.changeStatus', $booking->id) }}" method="POST">
                             @csrf
                             @method('PUT')
+                            <input type="hidden" name="status" value="canceled">
                             <button type="submit" class="btn btn-danger">Отклонить</button>
                         </form>
+
                     <? } else { ?>
                         <i>Действия недоступны, так как статус был изменён</i>
                     <? } ?>
