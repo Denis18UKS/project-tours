@@ -42,7 +42,8 @@
                             @else
                             <li><a href="{{route('tour')}}" class="nav__link">Туры</a></li>
                             <li><a href="#" class="nav__link" data-bs-toggle="modal" data-bs-target="#contactModal">Контакты</a></li>
-                            <li><a href="{{route('home')}}" class="nav__link">Личный кабинет</a></li>
+                            <li><a href="{{route('home')}}" class="nav__link">Личный кабинет ({{ auth()->user()->full_name }})</a></li>
+
                             @endif
                             <li><a href="{{route('logout')}}" class="nav__link">Выйти</a></li>
                             @endauth
