@@ -39,6 +39,7 @@
                             @if (auth()->user()->role === 'admin')
                             <li><a href="{{route('adminIndex')}}" class="nav__link">Управление турами</a></li>
                             <li><a href="{{route('AdminApp')}}" class="nav__link">Бронь туров</a></li>
+                            <li>({{ auth()->user()->full_name }})</li>
                             @else
                             <li><a href="{{route('tour')}}" class="nav__link">Туры</a></li>
                             <li><a href="#" class="nav__link" data-bs-toggle="modal" data-bs-target="#contactModal">Контакты</a></li>
